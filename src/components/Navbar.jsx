@@ -1,33 +1,82 @@
-import { navItems } from "../Constants";
+import { useState, useRef } from "react";
+import { navItems } from "../constants";
 
-const Navbar = ({setSecao}) => {  
+export default function Navbar({ setSecao }) {
+  const [somAtivo, setSomAtivo] = useState(false);
+  const [menuAberto, setMenuAberto] = useState(false);
+
+  const audioRef = useRef(new Audio("/sounds/ambient-dream.mp3"));
+
+  const toggleSom = () => {
+    if (somAtivo) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    } else {
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.4;
+      audioRef.current.play();
+    }
+
+    setSomAtivo(!somAtivo);
+  };
+
+  const mudarSecao = (secao) => {
+    setSecao(secao);
+    setMenuAberto(false);
+  };
+
   return (
-    <nav className="sticky top-0 z-50 ">
-      <div className="container px-4 mx-auto relative text-sm">
+    <nav className="sticky top-0 z-50">
+      <div className="container px-4 mx-auto">
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
-            <span>DevFilipe</span>
-          </div>
-          <div className="hidden lg:flex space-x-10">
+          <span className="text-white font-semibold">@filipeasj</span>
+
+          <div className="hidden md:flex space-x-8">
             {navItems.map((item, index) => (
               <button
                 key={index}
-                className="mx-4 cursor-pointer text-lg font-medium text-gray-300 hover:text-white transition-colors duration-300"
-                onClick={() => setSecao(item.href)}
+                className="cursor-pointer text-lg font-medium text-gray-300 hover:text-white transition"
+                onClick={() => mudarSecao(item.href)}
               >
                 {item.label}
               </button>
             ))}
           </div>
-          <div>
-            <button className="hidden lg:flex px-4 py-2 border bg-neutral-900 border-red-500 text-red-500 rounded-full hover:scale-105 ease-in-out transition duration-300">
-              Focus
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={toggleSom}
+              className="text-xl hover:scale-110 transition"
+            >
+              {somAtivo ? "🔊" : "🔇"}
+            </button>
+
+            <button
+              className="md:hidden text-2xl"
+              onClick={() => setMenuAberto(!menuAberto)}
+            >
+              ☰
             </button>
           </div>
         </div>
       </div>
+
+      {menuAberto && (
+        <div className="md:hidden fixed right-0 top-16 w-40 backdrop-blur-2xl rounded-lg">
+          {" "}
+          <div className="flex flex-col items-center py-6 gap-6">
+            {navItems.map((item, index) => (
+              <button
+                key={index}
+                className="text-lg text-gray-300 hover:text-white transition"
+                onClick={() => mudarSecao(item.href)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </nav>
   );
-};
-
-export default Navbar;
+}

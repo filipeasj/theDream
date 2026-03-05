@@ -1,7 +1,7 @@
 export  const navItems = [
-    {label: "Home", href: "incio"},
-    {label: "Dream", href: "sonho"},
-    {label: "About", href: "sobre"},
+    {label: "Inicio", href: "inicio"},
+    {label: "Sonho", href: "sonho"},
+    {label: "Sobre", href: "sobre"},
 ]
 
 export const aboutItems = [
@@ -26,3 +26,35 @@ export const aboutItems = [
       "O The Dream foi criado como um experimento de interface e experiência do usuário. A ideia é transformar uma simples ferramenta de produtividade em algo mais envolvente, utilizando narrativa, design e interação para tornar o foco uma experiência quase cinematográfica."
   }
 ];
+
+export const dreamModes = [
+  {
+    nome: "Sonho leve",
+    tempo: 900,
+    descricao: "Sessão curta para iniciar o foco."
+  },
+  {
+    nome: "pomodoro",
+    tempo: 1500,
+    descricao: "Ciclo clássico de concentração."
+  },
+  {
+    nome: "Sonho intenso",
+    tempo: 2700,
+    descricao: "Foco prolongado para tarefas complexas."
+  },
+  {
+    nome: "Limbo",
+    tempo: 5400,
+    descricao: "Ciclo completo de desempenho cognitivo."
+  }
+];
+
+export const messages = [
+    "Conecte o fone e ative o som.",
+    "Permaneça focado. O sonho continua.",
+    "Cada segundo de foco constrói algo maior.",
+    "A distração é a saída do sonho. Continue.",
+    "Seu cérebro está em estado profundo de atenção.",
+    "Grandes ideias nascem no silêncio da concentração."
+  ];

@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import DreamSection from "./components/DreamSection";
 import AboutSection from "./components/Aboutsection";
 import { motion, AnimatePresence } from "framer-motion";
-import Footer from "./components/Footer";
 
 function App() {
   const [secao, setSecao] = useState("inicio");
@@ -41,8 +40,6 @@ function App() {
           </motion.div>
         </AnimatePresence>
       </main>
-
-      <Footer />
     </div>
   );
 }
