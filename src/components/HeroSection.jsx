@@ -1,4 +1,4 @@
-import spinning from "../assets/spinning3.mp4";
+import spinning from "../assets/spinning.mp4";
 import Footer from "./Footer";
 
 export default function HeroSection({setSecao}) {

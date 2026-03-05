@@ -2,7 +2,7 @@ export default function Footer() {
   return (
     <footer className="relative py-4 text-center">
       <p className="text-xs">
-        © 2026 densevolvido por Filipe Alves
+        © 2026 Desenvolvido por Filipe Alves
       </p>
 
       <div className="flex justify-center space-x-4 mt-2">
