@@ -5,38 +5,44 @@ import Navbar from "./components/Navbar";
 import DreamSection from "./components/DreamSection";
 import AboutSection from "./components/Aboutsection";
 import { motion, AnimatePresence } from "framer-motion";
+import Footer from "./components/Footer";
 
 function App() {
-  const[secao, setSecao] = useState("inicio");
+  const [secao, setSecao] = useState("inicio");
 
   const renderizarSecao = () => {
     switch (secao) {
       case "inicio":
         return <HeroSection setSecao={setSecao} />;
       case "sonho":
-        return <DreamSection/>;
+        return <DreamSection />;
       case "sobre":
-        return <AboutSection/>;
+        return <AboutSection />;
       default:
         return <HeroSection setSecao={setSecao} />;
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="max-h-screen flex flex-col">
       <Navbar setSecao={setSecao} />
 
-      <AnimatePresence mode="wait">
-        <motion.div
+      <main className="flex-1 flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          <motion.div
           key={secao}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-        >
-          {renderizarSecao()}
-        </motion.div>
-      </AnimatePresence>
+            className="w-full"
+          >
+            {renderizarSecao()}
+          </motion.div>
+        </AnimatePresence>
+      </main>
+
+      <Footer />
     </div>
   );
 }
