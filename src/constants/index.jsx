@@ -51,8 +51,10 @@ export const dreamModes = [
 ];
 
 export const messages = [
-    "Conecte o fone e ative o som.",
+    "Quando terminar, eu te aviso",
     "Permaneça focado. O sonho continua.",
+    "Foco é o arquiteto da realidade",
+    "Uma ideia pequena pode mudar tudo.",
     "Cada segundo de foco constrói algo maior.",
     "A distração é a saída do sonho. Continue.",
     "Seu cérebro está em estado profundo de atenção.",

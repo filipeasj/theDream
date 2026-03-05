@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { dreamModes } from "../constants";
 import { messages } from "../constants";
 
@@ -9,6 +9,7 @@ export default function DreamSection() {
   const [rodando, setRodando] = useState(false);
   const [concluido, setConcluido] = useState(false);
   const [messagesIndex, setMessagesIndex] = useState(0);
+  const audioRef = useRef(new Audio("/sounds/end-dream.mp3"));
 
   useEffect(() => {
     setTempo(modoSelecionado.tempo);
@@ -27,6 +28,8 @@ export default function DreamSection() {
     if (tempo === 0 && rodando) {
       setRodando(false);
       setConcluido(true);
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
     }
 
     return () => clearInterval(intervalo);
@@ -67,7 +70,7 @@ export default function DreamSection() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center text-center py-50">
+    <section className="flex flex-col items-center justify-center text-center py-40">
 
       <div className="text-7xl font-medium tracking-widest mb-1">
         {formatarTempo(tempo)}
@@ -118,7 +121,7 @@ export default function DreamSection() {
       {!rodando && !concluido && (
         <button
           onClick={entrarNoSonho}
-          className="px-8 py-3 border border-red-500 bg-red-800 cursor-pointer rounded-full hover:scale-105 transition"
+          className="px-8 py-3 border border-red-500 bg-red-500 cursor-pointer rounded-full hover:scale-105 transition"
         >
           Entrar no sonho
         </button>
