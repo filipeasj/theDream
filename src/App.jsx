@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import DreamSection from "./components/DreamSection";
 import AboutSection from "./components/Aboutsection";
 import { motion, AnimatePresence } from "framer-motion";
+import HistorySection from "./components/HistorySection";
 
 function App() {
   const [secao, setSecao] = useState("inicio");
@@ -17,6 +18,8 @@ function App() {
         return <DreamSection />;
       case "sobre":
         return <AboutSection />;
+      case "historico":
+        return <HistorySection/>;
       default:
         return <HeroSection setSecao={setSecao} />;
     }

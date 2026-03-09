@@ -1,22 +1,31 @@
 import { useState, useEffect, useRef } from "react";
-import { dreamModes } from "../constants";
-import { messages } from "../constants";
+import { dreamModes, messages } from "../constants";
+import { useHistory } from "../hooks/useHistory";
 
 export default function DreamSection() {
 
   const [modoSelecionado, setModoSelecionado] = useState(dreamModes[0]);
   const [tempo, setTempo] = useState(modoSelecionado.tempo);
+
   const [rodando, setRodando] = useState(false);
+  const [pausado, setPausado] = useState(false);
   const [concluido, setConcluido] = useState(false);
+
   const [messagesIndex, setMessagesIndex] = useState(0);
+
   const audioRef = useRef(new Audio("/sounds/end-dream.mp3"));
+
+  const { addSession } = useHistory();
 
   useEffect(() => {
     setTempo(modoSelecionado.tempo);
     setConcluido(false);
+    setRodando(false);
+    setPausado(false);
   }, [modoSelecionado]);
 
   useEffect(() => {
+
     let intervalo = null;
 
     if (rodando && tempo > 0) {
@@ -26,16 +35,26 @@ export default function DreamSection() {
     }
 
     if (tempo === 0 && rodando) {
+
       setRodando(false);
       setConcluido(true);
+
       audioRef.current.currentTime = 0;
       audioRef.current.play();
+
+      addSession({
+        modo: modoSelecionado.nome,
+        data: new Date().toISOString()
+      });
+
     }
 
     return () => clearInterval(intervalo);
+
   }, [rodando, tempo]);
 
   useEffect(() => {
+
     if (!rodando) return;
 
     const intervaloMessages = setInterval(() => {
@@ -43,24 +62,40 @@ export default function DreamSection() {
     }, 10000);
 
     return () => clearInterval(intervaloMessages);
+
   }, [rodando]);
 
   const formatarTempo = (segundos) => {
+
     const min = Math.floor(segundos / 60);
     const sec = segundos % 60;
 
     return `${min.toString().padStart(2, "0")}:${sec
       .toString()
       .padStart(2, "0")}`;
+
   };
 
   const entrarNoSonho = () => {
     setRodando(true);
+    setPausado(false);
     setConcluido(false);
+  };
+
+  const pausar = () => {
+    setRodando(false);
+    setPausado(true);
+  };
+
+  const retomar = () => {
+    setRodando(true);
+    setPausado(false);
   };
 
   const despertar = () => {
     setRodando(false);
+    setPausado(false);
+    setConcluido(false);
     setTempo(modoSelecionado.tempo);
   };
 
@@ -70,13 +105,14 @@ export default function DreamSection() {
   };
 
   return (
+
     <section className="flex flex-col items-center justify-center text-center py-40">
 
       <div className="text-7xl font-medium tracking-widest mb-1">
         {formatarTempo(tempo)}
       </div>
 
-      {rodando && (
+      {(rodando || pausado) && (
         <p className="text-gray-400 mb-10 max-w-md transition-opacity duration-500">
           {messages[messagesIndex]}
         </p>
@@ -93,7 +129,7 @@ export default function DreamSection() {
         </div>
       )}
 
-      {!rodando && !concluido && (
+      {!rodando && !pausado && !concluido && (
         <>
           <p className="text-gray-400 mb-10">
             {modoSelecionado.descricao}
@@ -115,25 +151,50 @@ export default function DreamSection() {
               </button>
             ))}
           </div>
+
+          <button
+            onClick={entrarNoSonho}
+            className="px-8 py-3 border border-red-500 bg-red-500 cursor-pointer rounded-full hover:scale-105 transition"
+          >
+            Entrar no sonho
+          </button>
         </>
       )}
 
-      {!rodando && !concluido && (
-        <button
-          onClick={entrarNoSonho}
-          className="px-8 py-3 border border-red-500 bg-red-500 cursor-pointer rounded-full hover:scale-105 transition"
-        >
-          Entrar no sonho
-        </button>
+      {rodando && (
+        <div className="flex gap-4">
+          <button
+            onClick={pausar}
+            className="px-8 py-3 border border-blue-500 text-blue-400 rounded-full hover:scale-105 transition cursor-pointer"
+          >
+            Pausar
+          </button>
+
+          <button
+            onClick={despertar}
+            className="px-8 py-3 border border-red-500 text-red-500 rounded-full hover:scale-105 transition cursor-pointer"
+          >
+            Chute
+          </button>
+        </div>
       )}
 
-      {rodando && (
-        <button
-          onClick={despertar}
-          className="px-8 py-3 border border-red-500 text-red-500 rounded-full hover:scale-105 transition cursor-pointer mb-10"
-        >
-          Chute
-        </button>
+      {pausado && (
+        <div className="flex gap-4">
+          <button
+            onClick={retomar}
+            className="px-8 py-3 border border-yellow-500 text-yellow-400 rounded-full hover:scale-105 transition cursor-pointer"
+          >
+            Retomar
+          </button>
+
+          <button
+            onClick={despertar}
+            className="px-8 py-3 border border-red-500 text-red-500 rounded-full hover:scale-105 transition cursor-pointer"
+          >
+            Chute
+          </button>
+        </div>
       )}
 
       {concluido && (

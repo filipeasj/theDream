@@ -1,6 +1,7 @@
 export  const navItems = [
     {label: "Inicio", href: "inicio"},
     {label: "Sonho", href: "sonho"},
+    {label: "Histórico", href: "historico"},
     {label: "Sobre", href: "sobre"},
 ]
 
@@ -13,8 +14,7 @@ export const aboutItems = [
   {
     label: "Como funciona?",
     content:
-      "O aplicativo utiliza um sistema de timer inspirado na técnica Pomodoro. Você define um período de tempo e, ao iniciar o ciclo, entra em um estado de foco profundo. Durante esse intervalo, a ideia é permanecer totalmente imerso na atividade, como se estivesse dentro de um sonho onde apenas sua tarefa existe."
-  },
+      "Escolha sua profundidade: o Sonho Curto para insights rápidos, a Hipnagogia para iniciar o foco, o Pomodoro para produtividade constante sem exaustão ou o Ciclo REM (90 min) para imersão total em tarefas complexas."  },
   {
     label: "Por que isso funciona?",
     content:
@@ -29,22 +29,22 @@ export const aboutItems = [
 
 export const dreamModes = [
   {
-    nome: "Sonho leve",
-    tempo: 900,
-    descricao: "Sessão curta para iniciar o foco."
+    nome: "Sonho curto",
+    tempo: 300,
+    descricao: "Brainstorming rápido ou descanso"
   },
   {
-    nome: "pomodoro",
+    nome: "Hipnagogia",
+    tempo: 600,
+    descricao: "Transição para o estado de foco."
+  },
+  {
+    nome: "Pomodoro",
     tempo: 1500,
-    descricao: "Ciclo clássico de concentração."
+    descricao: "Ciclo clássico de produtividade."
   },
   {
-    nome: "Sonho intenso",
-    tempo: 2700,
-    descricao: "Foco prolongado para tarefas complexas."
-  },
-  {
-    nome: "Limbo",
+    nome: "Ciclo REM",
     tempo: 5400,
     descricao: "Ciclo completo de desempenho cognitivo."
   }
