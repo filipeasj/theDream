@@ -3,7 +3,7 @@ import "./App.css";
 import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
 import DreamSection from "./components/DreamSection";
-import AboutSection from "./components/Aboutsection";
+import AboutSection from "./components/AboutSection";
 import HistorySection from "./components/HistorySection";
 import { motion, AnimatePresence } from "framer-motion";
 
