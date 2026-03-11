@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import "./App.css";
-import HeroSection from "./components/HeroSection";
 import Navbar from "./components/Navbar";
-import DreamSection from "./components/DreamSection";
-import AboutSection from "./components/AboutSection";
-import HistorySection from "./components/HistorySection";
 import { motion, AnimatePresence } from "framer-motion";
+
+const HeroSection = lazy(() => import('./components/HeroSection'));
+const DreamSection = lazy(() => import('./components/DreamSection'));
+const AboutSection = lazy(() => import('./components/AboutSection'));
+const HistorySection = lazy(() => import('./components/HistorySection'));
 
 function App() {
   const [secao, setSecao] = useState("inicio");
@@ -13,15 +14,15 @@ function App() {
   const renderizarSecao = () => {
     switch (secao) {
       case "inicio":
-        return <HeroSection setSecao={setSecao} />;
+        return <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}><HeroSection setSecao={setSecao} /></Suspense>;
       case "sonho":
-        return <DreamSection />;
+        return <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}><DreamSection /></Suspense>;
       case "sobre":
-        return <AboutSection />;
+        return <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}><AboutSection /></Suspense>;
       case "historico":
-        return <HistorySection/>;
+        return <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}><HistorySection/></Suspense>;
       default:
-        return <HeroSection setSecao={setSecao} />;
+        return <Suspense fallback={<div className="flex items-center justify-center h-full"><div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div></div>}><HeroSection setSecao={setSecao} /></Suspense>;
     }
   };
 
