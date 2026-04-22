@@ -3,7 +3,6 @@ import { dreamModes, messages } from "../constants";
 import { useHistory } from "../hooks/useHistory";
 
 export default function DreamSection() {
-
   const [modoSelecionado, setModoSelecionado] = useState(dreamModes[0]);
   const [tempo, setTempo] = useState(modoSelecionado.tempo);
 
@@ -13,7 +12,8 @@ export default function DreamSection() {
 
   const [messagesIndex, setMessagesIndex] = useState(0);
 
-  const audioRef = useRef(new Audio("/sounds/end-dream.mp3"));
+  const endAudio = useRef(new Audio("/sounds/end-dream.mp3"));
+  const clickAudio = useRef(new Audio("/sounds/click.mp3"));
 
   const { addSession } = useHistory();
 
@@ -25,7 +25,6 @@ export default function DreamSection() {
   }, [modoSelecionado]);
 
   useEffect(() => {
-
     let intervalo = null;
 
     if (rodando && tempo > 0) {
@@ -35,26 +34,21 @@ export default function DreamSection() {
     }
 
     if (tempo === 0 && rodando) {
-
       setRodando(false);
       setConcluido(true);
 
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
+      playSound(endAudio);
 
       addSession({
         modo: modoSelecionado.nome,
-        data: new Date().toISOString()
+        data: new Date().toISOString(),
       });
-
     }
 
     return () => clearInterval(intervalo);
-
   }, [rodando, tempo]);
 
   useEffect(() => {
-
     if (!rodando) return;
 
     const intervaloMessages = setInterval(() => {
@@ -62,32 +56,37 @@ export default function DreamSection() {
     }, 10000);
 
     return () => clearInterval(intervaloMessages);
-
   }, [rodando]);
 
   const formatarTempo = (segundos) => {
-
     const min = Math.floor(segundos / 60);
     const sec = segundos % 60;
 
     return `${min.toString().padStart(2, "0")}:${sec
       .toString()
       .padStart(2, "0")}`;
+  };
 
+  const playSound = (audioRef) => {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(() => {});
   };
 
   const entrarNoSonho = () => {
+    playSound(clickAudio);
     setRodando(true);
     setPausado(false);
     setConcluido(false);
   };
 
   const pausar = () => {
+    playSound(clickAudio);
     setRodando(false);
     setPausado(true);
   };
 
   const retomar = () => {
+    playSound(clickAudio);
     setRodando(true);
     setPausado(false);
   };
@@ -105,10 +104,8 @@ export default function DreamSection() {
   };
 
   return (
-
     <section className="flex flex-col items-center justify-center text-center py-40">
-
-      <div className="text-7xl font-medium tracking-widest mb-1">
+      <div className="text-8xl lg:text-8xl font-medium tracking-widest mb-1">
         {formatarTempo(tempo)}
       </div>
 
@@ -120,20 +117,17 @@ export default function DreamSection() {
 
       {concluido && (
         <div className="mt-6 mb-10 max-w-md">
-          <p className="text-xl text-green-400 mb-2">
-            Você despertou.
-          </p>
+          <p className="text-xl text-green-400 mb-2">Você despertou.</p>
           <p className="text-gray-400">
-            Seu ciclo de foco terminou. Ideias criadas no sonho agora pertencem à realidade.
+            Seu ciclo de foco terminou. Ideias criadas no sonho agora pertencem
+            à realidade.
           </p>
         </div>
       )}
 
       {!rodando && !pausado && !concluido && (
         <>
-          <p className="text-gray-400 mb-10">
-            {modoSelecionado.descricao}
-          </p>
+          <p className="text-gray-400 mb-10">{modoSelecionado.descricao}</p>
 
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {dreamModes.map((modo, index) => (
@@ -205,7 +199,6 @@ export default function DreamSection() {
           Iniciar novo sonho
         </button>
       )}
-
     </section>
   );
 }
